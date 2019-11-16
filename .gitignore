@@ -35,6 +35,9 @@ sysinfo.txt
 *.apk
 #*.unitypackage
 
+#Tutorials
+Assets/FPS/Tutorials*
+
 # Assets
 Assets/Photon*
 Assets/NCMB*
