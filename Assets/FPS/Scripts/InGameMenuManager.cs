@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using HUDInterfaces;
 
-public class InGameMenuManager : MonoBehaviour
+public class InGameMenuManager : MonoBehaviour, IHUDInitialize
 {
     [Tooltip("Root GameObject of the menu used to toggle its activation")]
     public GameObject menuRoot;
@@ -24,33 +25,33 @@ public class InGameMenuManager : MonoBehaviour
     Health m_PlayerHealth;
     FramerateCounter m_FramerateCounter;
 
-    void Start()
-    {
-        m_PlayerInputsHandler = FindObjectOfType<PlayerInputHandler>();
-        DebugUtility.HandleErrorIfNullFindObject<PlayerInputHandler, InGameMenuManager>(m_PlayerInputsHandler, this);
+	public void InitializeHUD(GameObject player)
+	{
+		m_PlayerInputsHandler = player.GetComponent<PlayerInputHandler>();
+		DebugUtility.HandleErrorIfNullFindObject<PlayerInputHandler, InGameMenuManager>(m_PlayerInputsHandler, this);
 
-        m_PlayerHealth = m_PlayerInputsHandler.GetComponent<Health>();
-        DebugUtility.HandleErrorIfNullGetComponent<Health, InGameMenuManager>(m_PlayerHealth, this, gameObject);
+		m_PlayerHealth = m_PlayerInputsHandler.GetComponent<Health>();
+		DebugUtility.HandleErrorIfNullGetComponent<Health, InGameMenuManager>(m_PlayerHealth, this, gameObject);
 
-        m_FramerateCounter = FindObjectOfType<FramerateCounter>();
-        DebugUtility.HandleErrorIfNullFindObject<FramerateCounter, InGameMenuManager>(m_FramerateCounter, this);
+		m_FramerateCounter = FindObjectOfType<FramerateCounter>();
+		DebugUtility.HandleErrorIfNullFindObject<FramerateCounter, InGameMenuManager>(m_FramerateCounter, this);
 
-        menuRoot.SetActive(false);
+		menuRoot.SetActive(false);
 
-        lookSensitivitySlider.value = m_PlayerInputsHandler.lookSensitivity;
-        lookSensitivitySlider.onValueChanged.AddListener(OnMouseSensitivityChanged);
+		lookSensitivitySlider.value = m_PlayerInputsHandler.lookSensitivity;
+		lookSensitivitySlider.onValueChanged.AddListener(OnMouseSensitivityChanged);
 
-        shadowsToggle.isOn = QualitySettings.shadows != ShadowQuality.Disable;
-        shadowsToggle.onValueChanged.AddListener(OnShadowsChanged);
+		shadowsToggle.isOn = QualitySettings.shadows != ShadowQuality.Disable;
+		shadowsToggle.onValueChanged.AddListener(OnShadowsChanged);
 
-        invincibilityToggle.isOn = m_PlayerHealth.invincible;
-        invincibilityToggle.onValueChanged.AddListener(OnInvincibilityChanged);
+		invincibilityToggle.isOn = m_PlayerHealth.invincible;
+		invincibilityToggle.onValueChanged.AddListener(OnInvincibilityChanged);
 
-        framerateToggle.isOn = m_FramerateCounter.uiText.gameObject.activeSelf;
-        framerateToggle.onValueChanged.AddListener(OnFramerateCounterChanged);
-    }
+		framerateToggle.isOn = m_FramerateCounter.uiText.gameObject.activeSelf;
+		framerateToggle.onValueChanged.AddListener(OnFramerateCounterChanged);
+	}
 
-    private void Update()
+	private void Update()
     {
         // Lock cursor when clicking outside of menu
         if (!menuRoot.activeSelf && Input.GetMouseButtonDown(0))

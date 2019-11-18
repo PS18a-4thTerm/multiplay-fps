@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class WorldspaceHealthBar : MonoBehaviour
+public class WorldspaceHealthBar : MonoBehaviour, HUDInterfaces.IHUDUpdate
 {
     [Tooltip("Health component to track")]
     public Health health;
@@ -12,7 +12,7 @@ public class WorldspaceHealthBar : MonoBehaviour
     [Tooltip("Whether the health bar is visible when at full health or not")]
     public bool hideFullHealthBar = true;
 
-    void Update()
+    public void UpdateHUD(in float deltaTime)
     {
         // update health bar value
         healthBarImage.fillAmount = health.currentHealth / health.maxHealth;

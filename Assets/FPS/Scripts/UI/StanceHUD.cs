@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using HUDInterfaces;
 
-public class StanceHUD : MonoBehaviour
+public class StanceHUD : MonoBehaviour, IHUDInitialize
 {
     [Tooltip("Image component for the stance sprites")]
     public Image stanceImage;
@@ -10,16 +11,16 @@ public class StanceHUD : MonoBehaviour
     [Tooltip("Sprite to display when crouching")]
     public Sprite crouchingSprite;
 
-    private void Start()
-    {
-        PlayerCharacterController character = FindObjectOfType<PlayerCharacterController>();
-        DebugUtility.HandleErrorIfNullFindObject<PlayerCharacterController, StanceHUD>(character, this);
-        character.onStanceChanged += OnStanceChanged;
+	public void InitializeHUD(GameObject player)
+	{
+		PlayerCharacterController character = player.GetComponent<PlayerCharacterController>();
+		DebugUtility.HandleErrorIfNullFindObject<PlayerCharacterController, StanceHUD>(character, this);
+		character.onStanceChanged += OnStanceChanged;
 
-        OnStanceChanged(character.isCrouching);
-    }
+		OnStanceChanged(character.isCrouching);
+	}
 
-    void OnStanceChanged(bool crouched)
+	void OnStanceChanged(bool crouched)
     {
         stanceImage.sprite = crouched ? crouchingSprite : standingSprite;
     }
