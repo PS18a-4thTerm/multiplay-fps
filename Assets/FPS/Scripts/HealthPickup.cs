@@ -1,4 +1,7 @@
 ﻿using UnityEngine;
+//PhotonNetWork.Destroy使用するため追加
+using Photon.Pun;
+
 
 public class HealthPickup : MonoBehaviour
 {
@@ -25,8 +28,8 @@ public class HealthPickup : MonoBehaviour
             playerHealth.Heal(healAmount);
 
             m_Pickup.PlayPickupFeedback();
+            PhotonNetwork.Destroy(gameObject);//拾われたとき全クライアントから削除
 
-            Destroy(gameObject);
         }
     }
 }
