@@ -78,7 +78,7 @@ public class GameFlowManager : MonoBehaviour
         }
         else
         {
-            //FindPlayers();
+            //UpdatePlayersVariable();
 
             if (m_ObjectiveManager.AreAllObjectivesCompleted())
                 m_view.RPC(nameof(EndGame), RpcTarget.All, true);
@@ -124,7 +124,7 @@ public class GameFlowManager : MonoBehaviour
             m_TimeLoadEndGameScene = Time.time + endSceneLoadDelay;
         }
     }
-    public void FindPlayers()
+    public void UpdatePlayersVariable()
     {
         m_Players = FindObjectsOfType<PlayerCharacterController>().ToList();
     }
