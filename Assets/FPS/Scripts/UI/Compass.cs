@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using HUDInterfaces;
 
-public class Compass : MonoBehaviour
+public class Compass : MonoBehaviour, IHUDInitialize
 {
     public RectTransform compasRect;
     public float visibilityAngle = 180f;
@@ -19,17 +20,17 @@ public class Compass : MonoBehaviour
     float m_WidthMultiplier;
     float m_heightOffset;
 
-    void Awake()
-    {
-        PlayerCharacterController playerCharacterController = FindObjectOfType<PlayerCharacterController>();
-        DebugUtility.HandleErrorIfNullFindObject<PlayerCharacterController, Compass>(playerCharacterController, this);
-        m_PlayerTransform = playerCharacterController.transform;
+	public void InitializeHUD(GameObject player)
+	{
+		PlayerCharacterController playerCharacterController = player.GetComponent<PlayerCharacterController>();
+		DebugUtility.HandleErrorIfNullFindObject<PlayerCharacterController, Compass>(playerCharacterController, this);
+		m_PlayerTransform = playerCharacterController.transform;
 
-        m_WidthMultiplier = compasRect.rect.width / visibilityAngle;
-        m_heightOffset = -compasRect.rect.height / 2;
-    }
+		m_WidthMultiplier = compasRect.rect.width / visibilityAngle;
+		m_heightOffset = -compasRect.rect.height / 2;
+	}
 
-    void Update()
+	void Update()
     {
         // this is all very WIP, and needs to be reworked
         foreach (var element in m_ElementsDictionnary)
