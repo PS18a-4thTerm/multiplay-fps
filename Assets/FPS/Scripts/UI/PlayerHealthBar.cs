@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using HUDInterfaces;
 
-public class PlayerHealthBar : MonoBehaviour, IHUDInitialize
+public class PlayerHealthBar : MonoBehaviour, IHUDInitialize, IHUDUpdate
 {
     [Tooltip("Image component dispplaying current health")]
     public Image healthFillImage;
@@ -20,7 +20,7 @@ public class PlayerHealthBar : MonoBehaviour, IHUDInitialize
 		DebugUtility.HandleErrorIfNullGetComponent<Health, PlayerHealthBar>(m_PlayerHealth, this, playerCharacterController.gameObject);
 	}
 
-	void Update()
+    public void UpdateHUD(in float deltaTime)
     {
         // update health bar value
         healthFillImage.fillAmount = m_PlayerHealth.currentHealth / m_PlayerHealth.maxHealth;

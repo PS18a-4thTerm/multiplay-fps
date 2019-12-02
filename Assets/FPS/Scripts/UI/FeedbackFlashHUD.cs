@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using HUDInterfaces;
 
-public class FeedbackFlashHUD : MonoBehaviour, IHUDInitialize
+public class FeedbackFlashHUD : MonoBehaviour, IHUDInitialize, IHUDUpdate
 {
     [Header("References")]
     [Tooltip("Image component of the flash")]
@@ -55,7 +55,7 @@ public class FeedbackFlashHUD : MonoBehaviour, IHUDInitialize
 		m_PlayerHealth.onHealed += OnHealed;
 	}
 
-	private void Update()
+    public void UpdateHUD(in float deltaTime)
     {
         if (m_PlayerHealth.isCritical())
         {

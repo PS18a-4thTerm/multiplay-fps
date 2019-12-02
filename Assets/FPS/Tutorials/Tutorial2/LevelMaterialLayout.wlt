@@ -427,7 +427,7 @@ MonoBehaviour:
   m_LastFolders:
   - Assets/FPS/Art/Materials/Level
   m_LastFoldersGridSize: 90
-  m_LastProjectPath: D:\Unity_GameProjects\fps_multiplayer\multiplay-fps
+  m_LastProjectPath: /Users/mpa_op/Documents/UnityProjects/multiplay-fps
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:

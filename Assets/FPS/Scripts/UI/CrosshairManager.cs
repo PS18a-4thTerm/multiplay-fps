@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-namespace HUDInterfaces;
+using HUDInterfaces;
 
-public class CrosshairManager : MonoBehaviour, IHUDInitialize
+public class CrosshairManager : MonoBehaviour, IHUDInitialize, IHUDUpdate
 {
     public Image crosshairImage;
     public Sprite nullCrosshairSprite;
@@ -25,7 +25,7 @@ public class CrosshairManager : MonoBehaviour, IHUDInitialize
 		m_WeaponsManager.onSwitchedToWeapon += OnWeaponChanged;
 	}
 
-	void Update()
+	public void UpdateHUD(in float deltaTime)
     {
         UpdateCrosshairPointingAtEnemy(false);
         m_WasPointingAtEnemy = m_WeaponsManager.isPointingAtEnemy;

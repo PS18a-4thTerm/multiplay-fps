@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using HUDInterfaces;
 
-public class JetpackCounter : MonoBehaviour, IHUDInitialize
+public class JetpackCounter : MonoBehaviour, IHUDInitialize, IHUDUpdate
 {
     [Tooltip("Image component representing jetpack fuel")]
     public Image jetpackFillImage;
@@ -21,7 +21,7 @@ public class JetpackCounter : MonoBehaviour, IHUDInitialize
 		fillBarColorChange.Initialize(1f, 0f);
 	}
 
-	void Update()
+    public void UpdateHUD(in float deltaTime)
     {
         mainCanvasGroup.gameObject.SetActive(m_Jetpack.isJetpackUnlocked);
 

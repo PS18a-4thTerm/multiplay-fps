@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 //作業者: 小川フィリップ優人
@@ -19,5 +20,7 @@ public class HUDMaster : MonoBehaviour
 		foreach (var hud in huds) hud.InitializeHUD(player);
 
 	}
+
+    public List<HUDInterfaces.IHUDUpdate> GetHUDUpdates() => FindObjectsOfType<MonoBehaviour>().OfType<HUDInterfaces.IHUDUpdate>().ToList();
 
 }
