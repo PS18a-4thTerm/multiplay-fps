@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using HUDInterfaces;
 
-public class InGameMenuManager : MonoBehaviour, IHUDInitialize
+public class InGameMenuManager : MonoBehaviour, IHUDInitialize, IHUDUpdate
 {
     [Tooltip("Root GameObject of the menu used to toggle its activation")]
     public GameObject menuRoot;
@@ -51,7 +51,7 @@ public class InGameMenuManager : MonoBehaviour, IHUDInitialize
 		framerateToggle.onValueChanged.AddListener(OnFramerateCounterChanged);
 	}
 
-	private void Update()
+	public void UpdateHUD(in float deltaTime)
     {
         // Lock cursor when clicking outside of menu
         if (!menuRoot.activeSelf && Input.GetMouseButtonDown(0))
