@@ -114,6 +114,7 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks // Photon Realtime ç
 		if(hud)
 		{
 			hud.InitializeHUD(player);
+            player.GetComponent<PlayerCharacterController>().SetHUDUpdates(hud);
 		}
     }
 
