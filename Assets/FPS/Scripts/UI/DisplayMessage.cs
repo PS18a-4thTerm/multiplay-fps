@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class DisplayMessage : MonoBehaviour
+public class DisplayMessage : MonoBehaviour, HUDInterfaces.IHUDUpdate
 {
     [Tooltip("The text that will be displayed")]
     [TextArea]
@@ -22,7 +22,7 @@ public class DisplayMessage : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void UpdateHUD(in float deltaTime)
     {
         if (m_WasDisplayed)
             return;
