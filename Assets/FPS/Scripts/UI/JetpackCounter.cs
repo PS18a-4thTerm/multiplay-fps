@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using HUDInterfaces;
 
-public class JetpackCounter : MonoBehaviour
+public class JetpackCounter : MonoBehaviour, IHUDInitialize, IHUDUpdate
 {
     [Tooltip("Image component representing jetpack fuel")]
     public Image jetpackFillImage;
@@ -12,15 +13,15 @@ public class JetpackCounter : MonoBehaviour
 
     Jetpack m_Jetpack;
 
-    void Awake()
-    {
-        m_Jetpack = FindObjectOfType<Jetpack>();
-        DebugUtility.HandleErrorIfNullFindObject<Jetpack, JetpackCounter>(m_Jetpack, this);
+	public void InitializeHUD(GameObject player)
+	{
+		m_Jetpack = player.GetComponent<Jetpack>();
+		DebugUtility.HandleErrorIfNullFindObject<Jetpack, JetpackCounter>(m_Jetpack, this);
 
-        fillBarColorChange.Initialize(1f, 0f);
-    }
+		fillBarColorChange.Initialize(1f, 0f);
+	}
 
-    void Update()
+    public void UpdateHUD(in float deltaTime)
     {
         mainCanvasGroup.gameObject.SetActive(m_Jetpack.isJetpackUnlocked);
 

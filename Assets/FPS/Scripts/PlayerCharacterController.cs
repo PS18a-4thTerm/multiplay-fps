@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using System.Collections.Generic;
+using HUDInterfaces;
 
 [RequireComponent(typeof(CharacterController), typeof(PlayerInputHandler), typeof(AudioSource))]
 public class PlayerCharacterController : MonoBehaviour
@@ -118,6 +120,9 @@ public class PlayerCharacterController : MonoBehaviour
     const float k_JumpGroundingPreventionTime = 0.2f;
     const float k_GroundCheckDistanceInAir = 0.07f;
 
+    //HUD List
+    private List<IHUDUpdate> m_hudUpdates;
+
     void Start()
     {
         // fetch components on the same gameObject
@@ -188,6 +193,12 @@ public class PlayerCharacterController : MonoBehaviour
         UpdateCharacterHeight(false);
 
         HandleCharacterMovement();
+
+        if(m_hudUpdates != null)
+        {
+            var time = Time.deltaTime;
+            foreach (var hud in m_hudUpdates) hud.UpdateHUD(time);
+        }
     }
 
     void OnDie()
@@ -432,5 +443,10 @@ public class PlayerCharacterController : MonoBehaviour
 
         isCrouching = crouched;
         return true;
+    }
+
+    public void SetHUDUpdates(in HUDMaster master)
+    {
+        m_hudUpdates = master.GetHUDUpdates();
     }
 }

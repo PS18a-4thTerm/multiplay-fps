@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using HUDInterfaces;
 
-public class CrosshairManager : MonoBehaviour
+public class CrosshairManager : MonoBehaviour, IHUDInitialize, IHUDUpdate
 {
     public Image crosshairImage;
     public Sprite nullCrosshairSprite;
@@ -14,17 +15,17 @@ public class CrosshairManager : MonoBehaviour
     CrosshairData m_CrosshairDataTarget;
     CrosshairData m_CurrentCrosshair;
 
-    void Start()
-    {
-        m_WeaponsManager = GameObject.FindObjectOfType<PlayerWeaponsManager>();
-        DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, CrosshairManager>(m_WeaponsManager, this);
+	public void InitializeHUD(GameObject player)
+	{
+		m_WeaponsManager = player.GetComponent<PlayerWeaponsManager>();
+		DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, CrosshairManager>(m_WeaponsManager, this);
 
-        OnWeaponChanged(m_WeaponsManager.GetActiveWeapon());
+		OnWeaponChanged(m_WeaponsManager.GetActiveWeapon());
 
-        m_WeaponsManager.onSwitchedToWeapon += OnWeaponChanged;
-    }
+		m_WeaponsManager.onSwitchedToWeapon += OnWeaponChanged;
+	}
 
-    void Update()
+	public void UpdateHUD(in float deltaTime)
     {
         UpdateCrosshairPointingAtEnemy(false);
         m_WasPointingAtEnemy = m_WeaponsManager.isPointingAtEnemy;

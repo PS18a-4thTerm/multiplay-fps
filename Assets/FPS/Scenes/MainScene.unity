@@ -4969,10 +4969,15 @@ PrefabInstance:
       propertyPath: viewIdField
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1932249632236122027, guid: c996b53e9f849234393d1e90f68d1679,
+    - target: {fileID: 7966276705436370871, guid: c996b53e9f849234393d1e90f68d1679,
         type: 3}
-      propertyPath: InstantiationId
-      value: 1
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7966276705436370871, guid: c996b53e9f849234393d1e90f68d1679,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 106.700195
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c996b53e9f849234393d1e90f68d1679, type: 3}

@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 
 [RequireComponent(typeof(FillBarColorChange))]
-public class AmmoCounter : MonoBehaviour
+public class AmmoCounter : MonoBehaviour, HUDInterfaces.IHUDUpdate
 {
     [Tooltip("CanvasGroup to fade the ammo UI")]
     public CanvasGroup canvasGroup;
@@ -49,15 +49,15 @@ public class AmmoCounter : MonoBehaviour
         FillBarColorChange.Initialize(1f, m_Weapon.GetAmmoNeededToShoot());
     }
 
-    void Update()
+    public void UpdateHUD(in float deltaTime)
     {
         float currenFillRatio = m_Weapon.currentAmmoRatio;
-        ammoFillImage.fillAmount = Mathf.Lerp(ammoFillImage.fillAmount, currenFillRatio, Time.deltaTime * ammoFillMovementSharpness);
+        ammoFillImage.fillAmount = Mathf.Lerp(ammoFillImage.fillAmount, currenFillRatio, deltaTime * ammoFillMovementSharpness);
 
         bool isActiveWeapon = m_Weapon == m_PlayerWeaponsManager.GetActiveWeapon();
 
-        canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha , isActiveWeapon ? 1f : unselectedOpacity, Time.deltaTime * 10);
-        transform.localScale = Vector3.Lerp(transform.localScale, isActiveWeapon ? Vector3.one : unselectedScale, Time.deltaTime * 10);
+        canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha , isActiveWeapon ? 1f : unselectedOpacity, deltaTime * 10);
+        transform.localScale = Vector3.Lerp(transform.localScale, isActiveWeapon ? Vector3.one : unselectedScale, deltaTime * 10);
         controlKeysRoot.SetActive(!isActiveWeapon);
 
         FillBarColorChange.UpdateVisual(currenFillRatio);
