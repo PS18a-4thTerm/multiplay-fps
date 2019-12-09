@@ -4279,6 +4279,8 @@ GameObject:
   - component: {fileID: 2729281214538404665}
   - component: {fileID: 2729281214538404664}
   - component: {fileID: 2729281214538404671}
+  - component: {fileID: 2729281214538404672}
+  - component: {fileID: 2729281214538404673}
   m_Layer: 5
   m_Name: EventSystem
   m_TagString: Untagged
@@ -4305,6 +4307,31 @@ MonoBehaviour:
   m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
+--- !u!114 &2729281214538404672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2729281214538404670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e8ef5ee47ac4640879677ce6c76f5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_message: 
+--- !u!114 &2729281214538404673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2729281214538404670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7291da93a8e664469a2c4a68272145a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2729281214693666535
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5156,6 +5183,16 @@ PrefabInstance:
     - target: {fileID: 1315839542569712025, guid: c996b53e9f849234393d1e90f68d1679,
         type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932249632236122027, guid: c996b53e9f849234393d1e90f68d1679,
+        type: 3}
+      propertyPath: viewIdField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932249632236122027, guid: c996b53e9f849234393d1e90f68d1679,
+        type: 3}
+      propertyPath: InstantiationId
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

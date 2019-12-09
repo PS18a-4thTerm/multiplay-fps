@@ -16,7 +16,8 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks // Photon Realtime �
     [SerializeField] Transform[] m_spawnPoints;
     /// <summary>自分が出現した場所を記憶しておく変数</summary>
     Transform m_mySpawnPoint;
-
+    Events m_event;
+   
     private void Awake()
     {
         // シーンの自動同期は無効にする
@@ -25,6 +26,8 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks // Photon Realtime �
 
     private void Start()
     {
+        m_event = FindObjectOfType<Events>();
+       
         // Photon に接続する
         Connect("1.0"); // 1.0 はバージョン番号（同じバージョンを指定したクライアント同士が接続できる）
     }
@@ -107,6 +110,7 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks // Photon Realtime �
 
         // 自分だけ入力を有効にする
         player.GetComponent<NetworkPlayerController>().Initialize();
+        m_event.InitEvent();
     }
 
     #region MonoBehaviourPunCallbacks のコールバック関数
