@@ -4,12 +4,16 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
+using UnityEngine.UI;
 public class InitEvent : MonoBehaviourPunCallbacks, IOnEventCallback
 {
+
+    [SerializeField] Text m_Text;
+    [SerializeField] int m_DelayTime = 2;
     // Start is called before the first frame update
     void Start()
     {
-        
+       
     }
    
     void IOnEventCallback.OnEvent(EventData e)
@@ -19,18 +23,19 @@ public class InitEvent : MonoBehaviourPunCallbacks, IOnEventCallback
             if((int) e.Code == 0)
             {
                 // イベントで受け取った内容をログに出力する
-                string message = "send Event";/*"OnEvent. EventCode: " + e.Code.ToString() + ", Message: " + e.CustomData.ToString() + ", From: " + e.Sender.ToString()*/
-                Debug.Log(message);
+               m_Text.text = e.Sender.ToString()+"番目のプレイヤーが参加しました";
+                StartCoroutine(HiddenText());
+               // Debug.Log(message);
             }
-            if ((int)e.Code == 1)
-            {
-                // イベントで受け取った内容をログに出力する
-                string message = "send Event2";/*"OnEvent. EventCode: " + e.Code.ToString() + ", Message: " + e.CustomData.ToString() + ", From: " + e.Sender.ToString()*/
-                Debug.Log(message);
-            }
-
+            
         }
     }
+    IEnumerator HiddenText()
+    {
+        yield return new WaitForSeconds(m_DelayTime);
+        m_Text.text = "";
+    }
+
     // Update is called once per frame
     void Update()
     {

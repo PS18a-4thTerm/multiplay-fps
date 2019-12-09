@@ -16,11 +16,12 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks // Photon Realtime �
     [SerializeField] Transform[] m_spawnPoints;
     /// <summary>自分が出現した場所を記憶しておく変数</summary>
     Transform m_mySpawnPoint;
-
+    Events m_event;
     private void Awake()
     {
         // シーンの自動同期は無効にする
         PhotonNetwork.AutomaticallySyncScene = false;
+        
     }
 
     private void Start()
@@ -116,6 +117,12 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks // Photon Realtime �
 			hud.InitializeHUD(player);
             player.GetComponent<PlayerCharacterController>().SetHUDUpdates(hud);
 		}
+        //プレイヤーにイベントを飛ばす
+        var InitEvent = FindObjectOfType<Events>();
+        if (InitEvent)
+        {
+            InitEvent.InitEvent();
+        }
     }
 
     #region MonoBehaviourPunCallbacks のコールバック関数
