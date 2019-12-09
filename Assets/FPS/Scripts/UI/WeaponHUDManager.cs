@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using HUDInterfaces;
 
-public class WeaponHUDManager : MonoBehaviour
+public class WeaponHUDManager : MonoBehaviour, IHUDInitialize
 {
     [Tooltip("UI panel containing the layoutGroup for displaying weapon ammos")]
     public RectTransform ammosPanel;
@@ -11,24 +12,24 @@ public class WeaponHUDManager : MonoBehaviour
     PlayerWeaponsManager m_PlayerWeaponsManager;
     List<AmmoCounter> m_AmmoCounters = new List<AmmoCounter>();
 
-    void Start()
-    {
-        m_PlayerWeaponsManager = FindObjectOfType<PlayerWeaponsManager>();
-        DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, WeaponHUDManager>(m_PlayerWeaponsManager, this);
+	public void InitializeHUD(GameObject player)
+	{
+		m_PlayerWeaponsManager = player.GetComponent<PlayerWeaponsManager>();
+		DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, WeaponHUDManager>(m_PlayerWeaponsManager, this);
 
-        WeaponController activeWeapon = m_PlayerWeaponsManager.GetActiveWeapon();
-        if (activeWeapon)
-        {
-            AddWeapon(activeWeapon, m_PlayerWeaponsManager.activeWeaponIndex);
-            ChangeWeapon(activeWeapon);
-        }
+		WeaponController activeWeapon = m_PlayerWeaponsManager.GetActiveWeapon();
+		if (activeWeapon)
+		{
+			AddWeapon(activeWeapon, m_PlayerWeaponsManager.activeWeaponIndex);
+			ChangeWeapon(activeWeapon);
+		}
 
-        m_PlayerWeaponsManager.onAddedWeapon += AddWeapon;
-        m_PlayerWeaponsManager.onRemovedWeapon += RemoveWeapon;
-        m_PlayerWeaponsManager.onSwitchedToWeapon += ChangeWeapon;
-    }
+		m_PlayerWeaponsManager.onAddedWeapon += AddWeapon;
+		m_PlayerWeaponsManager.onRemovedWeapon += RemoveWeapon;
+		m_PlayerWeaponsManager.onSwitchedToWeapon += ChangeWeapon;
+	}
 
-    void AddWeapon(WeaponController newWeapon, int weaponIndex)
+	void AddWeapon(WeaponController newWeapon, int weaponIndex)
     {
         GameObject ammoCounterInstance = Instantiate(ammoCounterPrefab, ammosPanel);
         AmmoCounter newAmmoCounter = ammoCounterInstance.GetComponent<AmmoCounter>();
