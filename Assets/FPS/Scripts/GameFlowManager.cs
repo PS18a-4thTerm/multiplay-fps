@@ -128,4 +128,14 @@ public class GameFlowManager : MonoBehaviour
     {
         m_Players = FindObjectsOfType<PlayerCharacterController>().ToList();
     }
+
+    [PunRPC]
+    public void OnPlayerSpwned()
+    {
+        var players = FindObjectsOfType<PlayerCharacterController>();
+        foreach (var item in players)
+        {
+            Debug.Log(item.GetComponent<PlayerCharacterController>().enabled);
+        }
+    }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-
+using Photon.Pun;
 public class Health : MonoBehaviour
 {
     [Tooltip("Maximum amount of health")]
@@ -42,6 +42,7 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(float damage, GameObject damageSource)
     {
+        Debug.Log("TakeDamage");
         if (invincible)
             return;
 
@@ -87,4 +88,5 @@ public class Health : MonoBehaviour
             }
         }
     }
+
 }

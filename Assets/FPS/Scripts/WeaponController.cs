@@ -96,7 +96,7 @@ public class WeaponController : MonoBehaviour
     public float currentCharge { get; private set; }
     public Vector3 muzzleWorldVelocity { get; private set; }
     public float GetAmmoNeededToShoot() => (shootType != WeaponShootType.Charge ? 1 : ammoUsedOnStartCharge) / maxAmmo;
-
+    
     AudioSource m_ShootAudioSource;
 
     void Awake()

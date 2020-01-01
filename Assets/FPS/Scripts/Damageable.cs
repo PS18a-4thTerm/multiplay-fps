@@ -22,7 +22,7 @@ public class Damageable : MonoBehaviour
 
     public void InflictDamage(float damage, bool isExplosionDamage, GameObject damageSource)
     {
-
+        Debug.Log("InflictDamage呼ばれた");
         if(health)
         {
             var totalDamage = damage;

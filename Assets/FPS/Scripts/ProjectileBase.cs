@@ -13,6 +13,7 @@ public class ProjectileBase : MonoBehaviour
 
     public void Shoot(WeaponController controller)
     {
+        Debug.Log("Shoot");
         owner = controller.owner;
         initialPosition = transform.position;
         initialDirection = transform.forward;
