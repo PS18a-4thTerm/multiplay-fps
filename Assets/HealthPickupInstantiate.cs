@@ -21,10 +21,13 @@ public class HealthPickupInstantiate : MonoBehaviour
 
     IEnumerator WaitForConnect()
     {
+        Debug.Log("firstHealDrop");
         while (!PhotonNetwork.IsConnected || !PhotonNetwork.IsMasterClient)
         {
+            Debug.Log("waitinghealDrop");
             yield return null;
         }
         GameObject healthPack = PhotonNetwork.Instantiate(m_healthPackPrefab, this.transform.position, Quaternion.identity);
+        Debug.Log("SecondhealDrop");
     }
 }
