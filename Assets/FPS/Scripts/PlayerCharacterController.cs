@@ -2,13 +2,14 @@
 using UnityEngine.Events;
 using System.Collections.Generic;
 using HUDInterfaces;
+using Multiplayer_Camera;
 
 [RequireComponent(typeof(CharacterController), typeof(PlayerInputHandler), typeof(AudioSource))]
 public class PlayerCharacterController : MonoBehaviour
 {
     [Header("References")]
     [Tooltip("Reference to the main camera used for the player")]
-    public Camera playerCamera;
+    public PlayerCamera playerCamera;
     [Tooltip("Audio source for footsteps, jump, etc...")]
     public AudioSource audioSource;
 
@@ -253,16 +254,19 @@ public class PlayerCharacterController : MonoBehaviour
         }
 
         // vertical camera rotation
-        {
-            // add vertical inputs to the camera's vertical angle
-            m_CameraVerticalAngle += m_InputHandler.GetLookInputsVertical() * rotationSpeed * RotationMultiplier;
+        // {
+        //     // add vertical inputs to the camera's vertical angle
+        //     m_CameraVerticalAngle += m_InputHandler.GetLookInputsVertical() * rotationSpeed * RotationMultiplier;
 
-            // limit the camera's vertical angle to min/max
-            m_CameraVerticalAngle = Mathf.Clamp(m_CameraVerticalAngle, -89f, 89f);
+        //     // limit the camera's vertical angle to min/max
+        //     m_CameraVerticalAngle = Mathf.Clamp(m_CameraVerticalAngle, -89f, 89f);
 
-            // apply the vertical angle as a local rotation to the camera transform along its right axis (makes it pivot up and down)
-            playerCamera.transform.localEulerAngles = new Vector3(m_CameraVerticalAngle, 0, 0);
-        }
+        //     // apply the vertical angle as a local rotation to the camera transform along its right axis (makes it pivot up and down)
+        //     playerCamera.transform.localEulerAngles = new Vector3(m_CameraVerticalAngle, 0, 0);
+        // }
+
+        playerCamera.UpdateCameraRotation(m_InputHandler.GetLookInputsHorizontal(), m_InputHandler.GetLookInputsVertical());
+        playerCamera.UpdateCameraPosition(this);
 
         // character movement handling
         bool isSprinting = m_InputHandler.GetSprintInputHeld();
@@ -391,7 +395,7 @@ public class PlayerCharacterController : MonoBehaviour
         {
             m_Controller.height = m_TargetCharacterHeight;
             m_Controller.center = Vector3.up * m_Controller.height * 0.5f;
-            playerCamera.transform.localPosition = Vector3.up * m_TargetCharacterHeight * cameraHeightRatio;
+            //playerCamera.transform.localPosition = Vector3.up * m_TargetCharacterHeight * cameraHeightRatio;
             m_Actor.aimPoint.transform.localPosition = m_Controller.center;
         }
         // Update smooth height
@@ -400,9 +404,11 @@ public class PlayerCharacterController : MonoBehaviour
             // resize the capsule and adjust camera position
             m_Controller.height = Mathf.Lerp(m_Controller.height, m_TargetCharacterHeight, crouchingSharpness * Time.deltaTime);
             m_Controller.center = Vector3.up * m_Controller.height * 0.5f;
-            playerCamera.transform.localPosition = Vector3.Lerp(playerCamera.transform.localPosition, Vector3.up * m_TargetCharacterHeight * cameraHeightRatio, crouchingSharpness * Time.deltaTime);
+            //playerCamera.transform.localPosition = Vector3.Lerp(playerCamera.transform.localPosition, Vector3.up * m_TargetCharacterHeight * cameraHeightRatio, crouchingSharpness * Time.deltaTime);
             m_Actor.aimPoint.transform.localPosition = m_Controller.center;
         }
+
+        playerCamera.UpdateBaseHeight(m_TargetCharacterHeight, crouchingSharpness, force);
     }
 
     // returns false if there was an obstruction
