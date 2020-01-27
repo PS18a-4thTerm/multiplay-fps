@@ -185,7 +185,7 @@ public class WeaponController : MonoBehaviour
 
         if (show && changeWeaponSFX)
         {
-            m_ShootAudioSource.PlayOneShot(changeWeaponSFX);
+            m_ShootAudioSource?.PlayOneShot(changeWeaponSFX);
         }
 
         isWeaponActive = show;
