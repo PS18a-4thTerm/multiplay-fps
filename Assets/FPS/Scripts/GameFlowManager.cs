@@ -42,6 +42,9 @@ public class GameFlowManager : MonoBehaviour
     float m_TimeLoadEndGameScene;
     string m_SceneToLoad;
 
+    public Dictionary<int, GameObject> PlayerObjects = new Dictionary<int, GameObject>();
+
+
     void Start()
     {
         m_Player = FindObjectOfType<PlayerCharacterController>();
@@ -122,6 +125,18 @@ public class GameFlowManager : MonoBehaviour
         {
             m_SceneToLoad = loseSceneName;
             m_TimeLoadEndGameScene = Time.time + endSceneLoadDelay;
+        }
+    }
+    [PunRPC]
+    public void OnPlayerSpwned()
+    {
+        var players = FindObjectsOfType<PlayerCharacterController>().Select(x=>x.gameObject);
+        foreach (var item in players)
+        {
+            int an= PhotonView.Get(item).Owner.ActorNumber;
+            if (PlayerObjects.ContainsKey(an)) PlayerObjects[an] = item;
+            else PlayerObjects.Add(an, item);
+            Debug.Log($"OnSpawned - {an} , {item.name}");
         }
     }
     public void UpdatePlayersVariable()
