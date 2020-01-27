@@ -6,10 +6,9 @@ public class FollowPlayer : MonoBehaviour
 {
     private Transform m_PlayerTransform;
     private Vector3 m_OriginalOffset;
-
+    [SerializeField] PlayerCharacterController playerCharacterController;
     void Start()
     {
-        PlayerCharacterController playerCharacterController = GameObject.FindObjectOfType<PlayerCharacterController>();
         DebugUtility.HandleErrorIfNullFindObject<PlayerCharacterController, FollowPlayer>(playerCharacterController, this);
 
         m_PlayerTransform = playerCharacterController.transform;
