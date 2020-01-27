@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using HUDInterfaces;
 
-public class FeedbackFlashHUD : MonoBehaviour
+public class FeedbackFlashHUD : MonoBehaviour, IHUDInitialize, IHUDUpdate
 {
     [Header("References")]
     [Tooltip("Image component of the flash")]
@@ -38,23 +39,23 @@ public class FeedbackFlashHUD : MonoBehaviour
     Health m_PlayerHealth;
     GameFlowManager m_GameFlowManager;
 
-    void Start()
-    {
-        // Subscribe to player damage events
-        PlayerCharacterController playerCharacterController = FindObjectOfType<PlayerCharacterController>();
-        DebugUtility.HandleErrorIfNullFindObject<PlayerCharacterController, FeedbackFlashHUD>(playerCharacterController, this);
+	public void InitializeHUD(GameObject player)
+	{
+		// Subscribe to player damage events
+		PlayerCharacterController playerCharacterController = player.GetComponent<PlayerCharacterController>();
+		DebugUtility.HandleErrorIfNullFindObject<PlayerCharacterController, FeedbackFlashHUD>(playerCharacterController, this);
 
-        m_PlayerHealth = playerCharacterController.GetComponent<Health>();
-        DebugUtility.HandleErrorIfNullGetComponent<Health, FeedbackFlashHUD>(m_PlayerHealth, this, playerCharacterController.gameObject);
+		m_PlayerHealth = playerCharacterController.GetComponent<Health>();
+		DebugUtility.HandleErrorIfNullGetComponent<Health, FeedbackFlashHUD>(m_PlayerHealth, this, playerCharacterController.gameObject);
 
-        m_GameFlowManager = FindObjectOfType<GameFlowManager>();
-        DebugUtility.HandleErrorIfNullFindObject<GameFlowManager, FeedbackFlashHUD>(m_GameFlowManager, this);
+		m_GameFlowManager = FindObjectOfType<GameFlowManager>();
+		DebugUtility.HandleErrorIfNullFindObject<GameFlowManager, FeedbackFlashHUD>(m_GameFlowManager, this);
 
-        m_PlayerHealth.onDamaged += OnTakeDamage;
-        m_PlayerHealth.onHealed += OnHealed;
-    }
+		m_PlayerHealth.onDamaged += OnTakeDamage;
+		m_PlayerHealth.onHealed += OnHealed;
+	}
 
-    private void Update()
+    public void UpdateHUD(in float deltaTime)
     {
         if (m_PlayerHealth.isCritical())
         {

@@ -107,6 +107,15 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks // Photon Realtime �
 
         // 自分だけ入力を有効にする
         player.GetComponent<NetworkPlayerController>().Initialize();
+
+		//HUDにプレイヤー情報を渡す
+		var hud = FindObjectOfType<HUDMaster>();
+
+		if(hud)
+		{
+			hud.InitializeHUD(player);
+            player.GetComponent<PlayerCharacterController>().SetHUDUpdates(hud);
+		}
     }
 
     #region MonoBehaviourPunCallbacks のコールバック関数

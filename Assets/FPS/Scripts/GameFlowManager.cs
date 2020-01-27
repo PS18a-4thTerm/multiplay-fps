@@ -1,16 +1,20 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameFlowManager : MonoBehaviour
 {
     [Header("Parameters")]
-    [Tooltip("Duration of the fade-to-black at the end of the game")]
+    //[Tooltip("Duration of the fade-to-black at the end of the game")]
+    [Tooltip("ゲーム終了時のフェード時間")]
     public float endSceneLoadDelay = 3f;
-    [Tooltip("The canvas group of the fade-to-black screen")]
+    [Tooltip("ゲーム終了時のフェードに使うCanvas")]
     public CanvasGroup endGameFadeCanvasGroup;
 
     [Header("Win")]
-    [Tooltip("This string has to be the name of the scene you want to load when winning")]
+    [Tooltip("勝利シーン")]
     public string winSceneName = "WinScene";
     [Tooltip("Duration of delay before the fade-to-black, if winning")]
     public float delayBeforeFadeToBlack = 4f;
@@ -28,25 +32,39 @@ public class GameFlowManager : MonoBehaviour
 
     public bool gameIsEnding { get; private set; }
 
+    bool m_isMasterClient = false;
+    PhotonView m_view;
+
     PlayerCharacterController m_Player;
+    List<PlayerCharacterController> m_Players = new List<PlayerCharacterController>();
     NotificationHUDManager m_NotificationHUDManager;
     ObjectiveManager m_ObjectiveManager;
     float m_TimeLoadEndGameScene;
     string m_SceneToLoad;
 
+    public Dictionary<int, GameObject> PlayerObjects = new Dictionary<int, GameObject>();
+
+
     void Start()
     {
         m_Player = FindObjectOfType<PlayerCharacterController>();
-        DebugUtility.HandleErrorIfNullFindObject<PlayerCharacterController, GameFlowManager>(m_Player, this);
+        //DebugUtility.HandleErrorIfNullFindObject<PlayerCharacterController, GameFlowManager>(m_Player, this);
 
         m_ObjectiveManager = FindObjectOfType<ObjectiveManager>();
-		DebugUtility.HandleErrorIfNullFindObject<ObjectiveManager, GameFlowManager>(m_ObjectiveManager, this);
+        DebugUtility.HandleErrorIfNullFindObject<ObjectiveManager, GameFlowManager>(m_ObjectiveManager, this);
 
         AudioUtility.SetMasterVolume(1);
+
+        //PhotonViewの取得
+        m_view = GetComponent<PhotonView>();
+        m_isMasterClient = PhotonNetwork.IsMasterClient;
     }
 
     void Update()
     {
+        //MasterClient以外では勝敗判定をしない
+        if (!m_isMasterClient) return;
+
         if (gameIsEnding)
         {
             float timeRatio = 1 - (m_TimeLoadEndGameScene - Time.time) / endSceneLoadDelay;
@@ -63,15 +81,17 @@ public class GameFlowManager : MonoBehaviour
         }
         else
         {
+            //UpdatePlayersVariable();
+
             if (m_ObjectiveManager.AreAllObjectivesCompleted())
-                EndGame(true);
+                m_view.RPC(nameof(EndGame), RpcTarget.All, true);
 
             // Test if player died
-            if (m_Player.isDead)
-                EndGame(false);
+            if (0 < m_Players.Count && m_Players.All((x) => x.isDead))
+                m_view.RPC(nameof(EndGame), RpcTarget.All, false);
         }
     }
-
+    [PunRPC]
     void EndGame(bool win)
     {
         // unlocks the cursor before leaving the scene, to be able to click buttons
@@ -106,5 +126,21 @@ public class GameFlowManager : MonoBehaviour
             m_SceneToLoad = loseSceneName;
             m_TimeLoadEndGameScene = Time.time + endSceneLoadDelay;
         }
+    }
+    [PunRPC]
+    public void OnPlayerSpwned()
+    {
+        var players = FindObjectsOfType<PlayerCharacterController>().Select(x=>x.gameObject);
+        foreach (var item in players)
+        {
+            int an= PhotonView.Get(item).Owner.ActorNumber;
+            if (PlayerObjects.ContainsKey(an)) PlayerObjects[an] = item;
+            else PlayerObjects.Add(an, item);
+            Debug.Log($"OnSpawned - {an} , {item.name}");
+        }
+    }
+    public void UpdatePlayersVariable()
+    {
+        m_Players = FindObjectsOfType<PlayerCharacterController>().ToList();
     }
 }
