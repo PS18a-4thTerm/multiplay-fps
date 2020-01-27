@@ -3869,7 +3869,7 @@ PrefabInstance:
         type: 3}
       propertyPath: lootPrefab
       value: 
-      objectReference: {fileID: 8107362853564453153, guid: 2552c49da63997a45bcd92ce8d0701f2,
+      objectReference: {fileID: 768477829919197263, guid: 358945bd3ac916e47ae06bb1525e00bf,
         type: 3}
     - target: {fileID: 2015434656898269656, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
